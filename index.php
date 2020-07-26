@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sea Battle</title>
     <link rel="stylesheet" href="./css/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="./favicon.png" type="image/x-icon">
 </head>
 <body >
 
@@ -26,38 +28,21 @@
         ?>
     </div>
 
-    <script>
-        var elements = [...document.getElementsByClassName("element")];
-        let request = new XMLHttpRequest();
-        let url = "shoot.php";
-        let id = 0;
+    <div id = "form_info_container">
+        <form id = "form_info">
+            <div>
+                <label for = "player_id">Enter your ID:</label>
+                <input class = "id_input" id = "player_id" type = "text">
+            </div>
+            <div>
+                <label for = "oponent_id">Enter your oponent's ID:</label>
+                <input class = "id_input" id = "oponent_id" type = "text">
+            </div>      
+            <button id = "form_submit" type = "button">Submit</button> 
+        </form>
+    </div>
 
-        //configuring callback for ajax request
-        request.onreadystatechange = function() 
-        {
-            if (this.readyState == 4 && this.status == 200)
-            {
-                document.getElementById("el_" + id).style.background = this.responseText;
-            }
-        }
-
-        //hanging eventListeners for every element on click event
-        elements.forEach(e => e.addEventListener("click", function () 
-        {
-            let local_id = this.id.split("_")[1];
-            console.log(local_id);
-            id = local_id
-            shoot(id);
-        }));
-
-        function shoot(id)
-        {
-            //async ajax GET request
-            request.open("GET", url, true);
-            //send request
-            request.send();
-        }
-
+    <script src = "./js/index.js">
 
     </script>
 

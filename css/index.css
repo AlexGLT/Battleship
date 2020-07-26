@@ -1,26 +1,65 @@
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
 .container {
-    /* doesn't work */
-    /* position: relative;
-    left: 7%;
-    top: 7%; */
-    margin: auto;
-    /* position: absolute; */
-    top: 0; left: 0; bottom: 0; right: 0;
+    float: left;
+    margin-top: 3%;
+    margin-left: 3%;
+    border: #00bfff solid 2px;
     width: auto;
     height: auto;
-    border: #333 solid 2px;
-    display: inline-block;
 }
 
 .element {
     width: 40px;
     height: 40px;
-    border: #333 solid 1px;
+    border: #00bfff solid 1.5px;
+    border-radius: 10%;
     float: left;
+}
+
+.element:hover {
+    background: #b3ecff;
 }
 
 
 .line {
    clear: both;
    overflow: hidden;
+}
+
+
+.back_blue {
+    background: #b3ecff;
+}
+
+.back_red {
+    background: #ffb3b3;
+}
+
+#form_info_container {
+    float: left;
+    width: 200px;
+    height: 200px;
+    margin-left: 20px;
+    margin-top: 3%;
+}
+
+.id_input {
+    width: 180px;
+    height: 25px;
+    border: solid black 1.5px;
+    font-size: 18px;
+    margin: 5px 0px;
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+#form_submit {
+    width: 100px;
+    height: 40px;
+    background: #1aa3ff;
+    color: white;
+    border: solid black 0px;
+    font-size: 16px;
 }

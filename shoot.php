@@ -1,3 +1,3 @@
 <?php
-    echo "blue";
+    echo "#b3ecff";
 ?>
