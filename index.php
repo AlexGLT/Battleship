@@ -33,5 +33,40 @@
         ?>
     </div>
 
+    <script>
+        var elements = [...document.getElementsByClassName("element")];
+        let request = new XMLHttpRequest();
+        let url = "shoot.php";
+        let id = 0;
+
+        //configuring callback for ajax request
+        request.onreadystatechange = function() 
+        {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                document.getElementById("el_" + id).style.background = this.responseText;
+            }
+        }
+
+        //hanging eventListeners for every element on click event
+        elements.forEach(e => e.addEventListener("click", function () 
+        {
+            let local_id = this.id.split("_")[1];
+            console.log(local_id);
+            id = local_id
+            shoot(id);
+        }));
+
+        function shoot(id)
+        {
+            //async ajax GET request
+            request.open("GET", url, true);
+            //send request
+            request.send();
+        }
+
+
+    </script>
+
 </body>
 </html>
