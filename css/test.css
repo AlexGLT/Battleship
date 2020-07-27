@@ -55,7 +55,7 @@ body {
     font-family: 'Noto Sans TC', sans-serif;
 }
 
-#form_submit {
+#form_submit, #change_dir_btn {
     width: 100px;
     height: 40px;
     background: #1aa3ff;

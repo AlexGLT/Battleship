@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sea Battle</title>
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/test.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="./favicon.png" type="image/x-icon">
 </head>
@@ -39,10 +39,13 @@
                 <input class = "id_input" id = "oponent_id" type = "number" min = "1" max = "10" step = "1" value = "2">
             </div>      
             <button id = "form_submit" type = "button">Submit</button> 
+            <button type = "button" id = "change_dir_btn">Change direction</button>
+            <div id = "msg"></div>
         </form>
     </div>
 
-    <script src = "./js/index.js">
+
+    <script src = "./js/test.js">
 
     </script>
 
