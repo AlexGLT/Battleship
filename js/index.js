@@ -24,7 +24,7 @@
             oponent_id = oponent_id_input.value;
 
             //hide the form. We don't need it anymore.
-            document.getElementById("form_info_container").style.visibility = 'hidden';
+            document.getElementById("form_info_container").style.display = 'none';
         }
     });
 
