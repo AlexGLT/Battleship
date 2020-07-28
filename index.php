@@ -21,7 +21,7 @@
                     echo "<div class = 'line' id = 'line_" . ($i) . "'>";
                     for ($j = 0; $j < $height; $j++)
                     {
-                            echo "<div class = 'element' id = 'client_el_" . ($i * $width + $j) . "'></div>";
+                        echo "<div class = 'element client_element' id = 'client_el_" . ($i * $width + $j) . "'></div>";
                     }
                     echo "</div>";
                 }
@@ -39,7 +39,7 @@
                     echo "<div class = 'line' id = 'opponent_line_" . ($i) . "'>";
                     for ($j = 0; $j < $height; $j++)
                     {
-                            echo "<div class = 'element' id = 'opponent_el_" . ($i * $width + $j) . "'></div>";
+                            echo "<div class = 'element opponent_element' id = 'opponent_el_" . ($i * $width + $j) . "'></div>";
                     }
                     echo "</div>";
                 }
@@ -50,12 +50,15 @@
             <label class = "form_info_label" for = "player_id">Enter your ID:</label>
             <input class = "id_input" id = "player_id" type = "number" min = "1" max = "10" step = "1" value = "1">
         
-            <label class = "form_info_label" for = "oponent_id">Enter your oponent's ID:</label>
+            <label class = "form_info_label" for = "oponent_id">Enter your opponent's ID:</label>
             <input class = "id_input" id = "oponent_id" type = "number" min = "1" max = "10" step = "1" value = "2">
             <button id = "form_submit" type = "button">Submit</button> 
+            <button type = "button" id = "change_dir_btn">Change direction</button>
+            <div id = "msg"></div>
         </div>
         </div>
 
+    <script src = "./js/ship_config.js"></script>
     <script src = "./js/index.js">
 
     </script>

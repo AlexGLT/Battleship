@@ -1,6 +1,6 @@
 
     //obtaining array from HTMLCollection
-    let elements = [...document.getElementsByClassName("element")];
+    // let elements = [...document.getElementsByClassName("element")];
     let request = new XMLHttpRequest();
 
     //change it to the url of php script you want to use
@@ -18,10 +18,29 @@
     form_submit_btn.addEventListener("click", function() 
     {
         //allow click only if both ids are set
-        if (player_id_input.value && oponent_id_input.value)
+        if (player_id_input.value && oponent_id_input.value && configDone)
         {
             player_id = player_id_input.value;
             oponent_id = oponent_id_input.value;
+
+            ship_place.forEach(e => 
+            {
+                e.classList.remove("back_blue");
+            });
+            
+            
+            elements.forEach(e => e.classList.remove("back_blue"));
+
+            opponent_elements = [...document.getElementsByClassName("opponent_element")];
+
+            // let matr_index = 0;
+            opponent_elements.forEach(e => 
+            {
+                if (matrix[parseInt(e.id.split("_")[2])])
+                {
+                    e.classList.add("back_blue");
+                }
+            });
 
             //hide the form. We don't need it anymore.
             document.getElementById("form_info_container").style.display = 'none';
@@ -44,13 +63,13 @@
         }
     }
 
-    shoot(1);
+    // shoot(1);
 
     //hanging eventListeners for every element on click event
     elements.forEach(e => e.addEventListener("click", function () 
     {
         //we can make a move only if both ids are set
-        if (player_id && oponent_id)
+        if (player_id && oponent_id && configDone)
         {
             let local_id = this.id.split("_")[1];
             console.log(local_id);

@@ -18,4 +18,31 @@
         echo "Cought an error: <br>"; 
         echo $ex->getMessage();
     }
+
+    function executeQuery($sql, $args)
+    {
+        try 
+        {
+            $stmt = $db->prepare($sql);
+
+            if (!$stmt)
+            {
+                echo "Bad prepare";
+            }
+
+            if (!$stmt->execute(args))
+            {
+                echo "Bad execute";
+            }
+        }
+        catch(PDOException $ex)
+        {
+            echo "Error: <br>";
+            echo $ex->getMessage();
+            return null;
+        }
+
+        return $stmt;
+    }
+
 ?>

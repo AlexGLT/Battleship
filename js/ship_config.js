@@ -37,20 +37,22 @@ let dir = true;
 //indicates whether user placed all ships or not
 let configDone = false;
 
-let container = document.getElementsByClassName("container")[0];
+let container = document.getElementById("client");
 
 //getting all elements as array (initialy HTMLCollection)
-let elements = [...document.getElementsByClassName("element")];
+let elements = [...document.getElementsByClassName("client_element")];
 
 //hanging eventListeners on 'mouseover' event to handle position issues
 elements.forEach(e => 
 {
-   e.addEventListener("mouseover", function() 
-   {
-        el_id = parseInt(this.id.split("_")[1]);
-        checkBricks(el_id);
-   });
+   e.addEventListener("mouseover", element_mouseover_listener);
 });
+
+function element_mouseover_listener()
+{
+    el_id = parseInt(this.id.split("_")[2]);
+    checkBricks(el_id);
+}
 
 
 function checkBricks(id)
@@ -59,6 +61,7 @@ function checkBricks(id)
     {
         e.classList.remove("back_red");
     });
+
     let i = Math.floor(id / height);
     let j = id % width;
     
@@ -75,10 +78,11 @@ function checkBricks(id)
     }
     else
     {
+        // console.log("kek");
         canPlace = true;
         ship_place = elements.filter(e => 
         {
-            let el_id = parseInt(e.id.split("_")[1]);
+            let el_id = parseInt(e.id.split("_")[2]);
             if (dir)
             {
                 return el_id >= id && el_id < (id + ship);
@@ -96,7 +100,7 @@ function checkBricks(id)
         //but already placed ships remain
         elements.forEach(e =>
         {
-            el_id = parseInt(e.id.split("_")[1]);
+            el_id = parseInt(e.id.split("_")[2]);
             if (!matrix[el_id])
                 e.classList.remove("back_blue");
         });
@@ -107,7 +111,7 @@ function checkBricks(id)
         //here we check what elements to highlight and populate currentElements with current ship spots
         ship_place.forEach(p => 
         {
-            el_id = parseInt(p.id.split("_")[1]);
+            el_id = parseInt(p.id.split("_")[2]);
             currentElements.push(el_id);
             p.classList.add("back_blue");
         });
@@ -138,42 +142,52 @@ function checkBricks(id)
 
 elements.forEach(e => 
 {
-    e.addEventListener("click", function() 
+    e.addEventListener("click", ship_place_click_listener);
+});
+
+
+function ship_place_click_listener()
+{
+    //if user can't place next ship OR all ships are already places
+    //do nothing
+    if (canPlace && !configDone)
     {
-        //if user can't place next ship OR all ships are already places
-        //do nothing
-        if (canPlace && !configDone)
+        ships_array.ships[currentShipIndex] = currentElements;
+        currentElements.forEach(e => 
         {
-            ships_array.ships[currentShipIndex] = currentElements;
-            currentElements.forEach(e => 
+            if (e != -1)
             {
-                if (e != -1)
-                {
-                    console.log(e);
-                    matrix[e] = true;
-                    document.getElementById("el_" + e).classList.add("back_blue");
-                }
+                console.log(e);
+                matrix[e] = true;
+                document.getElementById("client_el_" + e).classList.add("back_blue");
+            }
+        });
+        if (currentShipIndex + 1 == ships.length)
+        {
+            configDone = true;
+            document.getElementById("msg").innerHTML = "You're done!";
+            elements.forEach(e => 
+            {
+                e.removeEventListener("mouseover", element_mouseover_listener);
+                e.removeEventListener("click", ship_place_click_listener);
             });
-            if (currentShipIndex + 1 == ships.length)
-            {
-                configDone = true;
-                document.getElementById("msg").innerHTML = "You're done!";
-                console.log(ships_array);
-            }
-            else
-            {
-                ship = ships[++currentShipIndex];
-            }
+            // console.log(ships_array);
+        }
+        else
+        {
+            ship = ships[++currentShipIndex];
         }
     }
-)});
+} 
 
 //toggle direction (horizontal / vertical)
-document.getElementById("change_dir_btn").addEventListener("click", function() 
+document.getElementById("change_dir_btn").addEventListener("click", change_dir_click_listener);
+
+function change_dir_click_listener()
 {
     dir = !dir;
     console.log(dir);
-});
+}
 
 //function to check collisions between current waiting to be placed ship
 //and all the others
