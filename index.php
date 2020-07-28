@@ -47,11 +47,11 @@
         </div>
         
         <div id = "form_info_container">
-            <label class = "form_info_label" for = "player_id">Enter your ID:</label>
-            <input class = "id_input" id = "player_id" type = "number" min = "1" max = "10" step = "1" value = "1">
+            <label class = "form_info_label" for = "client_id">Enter your ID:</label>
+            <input class = "id_input" id = "client_id" type = "number" min = "1" max = "10" step = "1" value = "1">
         
-            <label class = "form_info_label" for = "oponent_id">Enter your opponent's ID:</label>
-            <input class = "id_input" id = "oponent_id" type = "number" min = "1" max = "10" step = "1" value = "2">
+            <label class = "form_info_label" for = "opponent_id">Enter your opponent's ID:</label>
+            <input class = "id_input" id = "opponent_id" type = "number" min = "1" max = "10" step = "1" value = "2">
             <button id = "form_submit" type = "button">Submit</button> 
             <button type = "button" id = "change_dir_btn">Change direction</button>
             <div id = "msg"></div>

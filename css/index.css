@@ -14,7 +14,6 @@ body {
     margin-bottom: 3%;
     margin-right: 3%;
     margin-left: 3%;
-
 }
 
 #client{
@@ -37,11 +36,9 @@ body {
     background: #b3ecff;
 }
 
-
 .line {
     display: flex;
 }
-
 
 .back_blue {
     background: #b3ecff;
@@ -97,14 +94,18 @@ body {
 
 #form_submit, #change_dir_btn {
     width: 100px;
-    height: 40px;
+    height: auto;
     background: #1aa3ff;
     color: white;
     border: solid black 0px;
-    font-size: 16px;
-    /* margin-top: 5%; */
+    font-size: 20px;
+    padding: 3px;
 }
 
 #form_submit:hover, #change_dir_btn:hover {
     background: #349ce2;
+}
+
+.back_miss{
+    background-color: #d9dadc;
 }
