@@ -1,10 +1,11 @@
 <?php
+    $config = json_decode(file_get_contents("config.json"));
 
     //your connection credentials;
-    $host = "";
-    $user_name = "";
-    $pwd = "";
-    $dbname = "";
+    $host = $config->host;
+    $user_name = $config->user_name;
+    $pwd = $config->pwd;
+    $dbname = $config->dbname;
     $conn_string = "mysql:host=" . $host . ";dbname=" . $dbname;
     try
     {
@@ -19,7 +20,7 @@
         echo $ex->getMessage();
     }
 
-    function executeQuery($sql, $args)
+    function executeQuery($db, $sql, $args)
     {
         try 
         {
@@ -30,10 +31,12 @@
                 echo "Bad prepare";
             }
 
-            if (!$stmt->execute(args))
+            if (!$stmt->execute($args))
             {
                 echo "Bad execute";
             }
+
+            return $stmt;
         }
         catch(PDOException $ex)
         {
@@ -41,8 +44,6 @@
             echo $ex->getMessage();
             return null;
         }
-
-        return $stmt;
     }
 
 ?>
