@@ -6,3 +6,4 @@
 - [ ] Create ship config randomizer
 - [ ] Manage a checkup for field matrix before sending to backEnd
 - [ ] Create ajax functionality to send and receive updates
+- [ ] Rewrite css styles according to flexbox standard
