@@ -6,17 +6,7 @@
     $sql = "SELECT point FROM ships
         WHERE player_id = ?";
 
-    $stmt = $db->prepare($sql);
-
-    if (!$stmt)
-    {
-        echo "Bad prepare";
-    }
-
-    if (!$stmt->execute([1]))
-    {
-        echo "Bad execute";
-    }
+    
 
     $output = array();
     $output['points'] = array();

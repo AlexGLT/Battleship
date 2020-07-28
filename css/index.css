@@ -30,6 +30,7 @@ body {
     height: 40px;
     border: #00bfff solid 1.5px;
     border-radius: 10%;
+    transition: 0.25s;
 }
 
 .element:hover {
@@ -52,7 +53,7 @@ body {
 
 #form_info_container {
     width: 200px;
-    height: 200px;
+    height: 260px;
     margin-top: 0;
     order: 2;
     
@@ -66,7 +67,7 @@ body {
 }
 
 .id_input {
-    width: 180px;
+    width: 193px;
     height: 25px;
     border: solid black 1.5px;
     font-size: 18px;
@@ -81,6 +82,8 @@ body {
     color: white;
     border: solid black 0px;
     font-size: 16px;
+    margin-top: 1%;
+    margin-bottom: 2%;
 }
 
 #form_submit:hover {
@@ -89,5 +92,19 @@ body {
 
 .form_info_label{
     text-align: left;
-    width: 187px;
+    width: 200px;
+}
+
+#form_submit, #change_dir_btn {
+    width: 100px;
+    height: 40px;
+    background: #1aa3ff;
+    color: white;
+    border: solid black 0px;
+    font-size: 16px;
+    /* margin-top: 5%; */
+}
+
+#form_submit:hover, #change_dir_btn:hover {
+    background: #349ce2;
 }
