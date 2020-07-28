@@ -13,6 +13,10 @@ let ship = ships[currentShipIndex];
 let currentElements = [4];
 currentElements.fill(-1);
 
+let ships_array = {
+    ships: []
+};
+
 //array of elements of current not placed ship
 //used to highlight potential position
 let ship_place = [];
@@ -140,6 +144,7 @@ elements.forEach(e =>
         //do nothing
         if (canPlace && !configDone)
         {
+            ships_array.ships[currentShipIndex] = currentElements;
             currentElements.forEach(e => 
             {
                 if (e != -1)
@@ -153,6 +158,7 @@ elements.forEach(e =>
             {
                 configDone = true;
                 document.getElementById("msg").innerHTML = "You're done!";
+                console.log(ships_array);
             }
             else
             {
@@ -219,3 +225,4 @@ function checkCollisions()
     }
     return true;
 }
+
