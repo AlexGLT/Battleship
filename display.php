@@ -6,7 +6,7 @@
     $sql = "SELECT point FROM ships
         WHERE player_id = ?";
 
-    
+        
 
     $output = array();
     $output['points'] = array();
