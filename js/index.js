@@ -2,11 +2,15 @@
     //let elements = [...document.getElementsByClassName("element")];
     let request = new XMLHttpRequest();
 
+    let can_fire = true;
+
     //change it to the url of php script you want to use
     let shoot_url = "shoot.php";
     let ship_config_url = "ship_config.php";
-    
+    let check_activity_url = "check_activity.php";
+
     let id = 0;
+    let interval;
 
     let client_id;
     let opponent_id;
@@ -58,7 +62,7 @@
         {
             console.log(this.responseText);
 
-            console.log(id);
+            // console.log(id);
 
             if (JSON.parse(this.responseText).success === "true")
             {
@@ -69,6 +73,27 @@
             {
                 document.getElementById("client_el_" + id).classList.add("back_blue");
             }
+            else if (JSON.parse(this.responseText).can_fire === "true")
+            {
+                // clearInterval(interval);
+                can_fire = true;
+
+                let point = JSON.parse(this.responseText).point;
+
+                if (matrix[point])
+                {
+                    document.getElementById("opponent_el_" + point).classList.add("back_red");
+                }
+                else
+                {
+                    document.getElementById("opponent_el_" + point).classList.add("back_miss");
+                }
+            }
+            else if (JSON.parse(this.responseText).can_fire === "false")
+            {
+                // interval = setInterval(function() {check_activity(check_activity_url, null, "GET");}, 2500);
+                can_fire = false;
+            }
         }
     }
 
@@ -78,14 +103,21 @@
     elements.forEach(e => e.addEventListener("click", function () 
     {
         //we can make a move only if both ids are set
-        if (client_id && opponent_id && configDone)
+        if (client_id && opponent_id && configDone && can_fire)
         {
             let local_id = this.id.split("_")[2];
             id = local_id;
             // id = "point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id
             send_request(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
+            // interval = setInterval(function() {check_activity(check_activity_url, null, "GET");}, 2500);
+            can_fire = false;
         }
     }));
+
+    function check_activity(url, args, method)
+    {
+        send_request(url + "?client_id=" + client_id + "&opponent_id=" + opponent_id, args, method);
+    }
 
     function send_request(url, args, method)
     {

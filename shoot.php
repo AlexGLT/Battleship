@@ -5,15 +5,15 @@
     $client_id = $_GET['client_id'];
     $opponent_id = $_GET['opponent_id'];
 
-    $sql = "SELECT player_id FROM hits ORDER BY id DESC LIMIT 1";
+    // $sql = "SELECT player_id FROM hits WHERE player_id = ? OR player_id = ? ORDER BY id DESC LIMIT 1";
 
-    $row = executeQuery($db, $sql, null)->fetch(PDO::FETCH_ASSOC);
+    // $row = executeQuery($db, $sql, [$client_id, $opponent_id])->fetch(PDO::FETCH_ASSOC);
 
-    if ($row["player_id"] == $client_id)
-    {
-        echo json_encode(array("success" => "Not your attempt!"));
-        die();
-    }
+    // if ($row["player_id"] == $client_id)
+    // {
+    //     echo json_encode(array("success" => "Not your attempt!"));
+    //     die();
+    // }
 
     $sql = "INSERT INTO hits (point, player_id) VALUES (?, ?)";
 
