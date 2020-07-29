@@ -43,16 +43,16 @@ let container = document.getElementById("client");
 let elements = [...document.getElementsByClassName("client_element")];
 
 //hanging eventListeners on 'mouseover' event to handle position issues
-elements.forEach(e => 
-{
-   e.addEventListener("mouseover", element_mouseover_listener);
-});
+// elements.forEach(e => 
+// {
+//    e.addEventListener("mouseover", element_mouseover_listener);
+// });
 
-function element_mouseover_listener()
-{
-    el_id = parseInt(this.id.split("_")[2]);
-    checkBricks(el_id);
-}
+// function element_mouseover_listener()
+// {
+//     el_id = parseInt(this.id.split("_")[2]);
+//     checkBricks(el_id);
+// }
 
 
 function checkBricks(id)
@@ -117,7 +117,7 @@ function checkBricks(id)
         });
 
         //mechanism to avoid collisions
-        if (!checkCollisions())
+        if (!checkCollisions(dir, currentElements[0], ship))
         {
             console.log("collision");
             canPlace = false;
@@ -140,10 +140,10 @@ function checkBricks(id)
     }
 }
 
-elements.forEach(e => 
-{
-    e.addEventListener("click", ship_place_click_listener);
-});
+// elements.forEach(e => 
+// {
+//     e.addEventListener("click", ship_place_click_listener);
+// });
 
 
 function ship_place_click_listener()
@@ -181,7 +181,8 @@ function ship_place_click_listener()
 } 
 
 //toggle direction (horizontal / vertical)
-document.getElementById("change_dir_btn").addEventListener("click", change_dir_click_listener);
+
+//document.getElementById("change_dir_btn").addEventListener("click", change_dir_click_listener);
 
 function change_dir_click_listener()
 {
@@ -192,10 +193,10 @@ function change_dir_click_listener()
 //function to check collisions between current waiting to be placed ship
 //and all the others
 //May not be BUG FREE!
-function checkCollisions()
+function checkCollisions(dir, point, len)
 {
-    let ship_i = Math.floor(currentElements[0] / height);
-    let ship_j = currentElements[0] % width;
+    let ship_i = Math.floor(point / height);
+    let ship_j = point % width;
 
     let start_i, start_j, end_i, end_j;
 
@@ -205,12 +206,12 @@ function checkCollisions()
         start_i = ship_i - 1;
         end_i = ship_i + 1;
         start_j = ship_j - 1;
-        end_j = ship_j + ship;
+        end_j = ship_j + len;
     }
     else
     {
         start_i = ship_i - 1;
-        end_i = ship_i + ship;
+        end_i = ship_i + len;
         start_j = ship_j - 1;
         end_j = ship_j + 1;
     }
