@@ -2,31 +2,37 @@
     //obtaining array from HTMLCollection
     // let elements = [...document.getElementsByClassName("element")];
     let request = new XMLHttpRequest();
-
+    
+    
     //change it to the url of php script you want to use
-    let url = "display.php";
+    let url = "ship_config.php";
     let id = 0;
-
+    
     let player_id;
-    let oponent_id;
-
+    let opponent_id;
+    
     let player_id_input = document.getElementById("player_id");
-    let oponent_id_input = document.getElementById("oponent_id");
-
+    let opponent_id_input = document.getElementById("opponent_id");
+    
     let form_submit_btn = document.getElementById("form_submit");
+
+
+    
 
     form_submit_btn.addEventListener("click", function() 
     {
         //allow click only if both ids are set
-        if (player_id_input.value && oponent_id_input.value && configDone)
+        if (player_id_input.value && opponent_id_input.value && configDone)
         {
             player_id = player_id_input.value;
-            oponent_id = oponent_id_input.value;
+            opponent_id = opponent_id_input.value;
 
             ship_place.forEach(e => 
             {
                 e.classList.remove("back_blue");
             });
+
+            
             
             
             elements.forEach(e => e.classList.remove("back_blue"));
@@ -44,6 +50,8 @@
 
             //hide the form. We don't need it anymore.
             document.getElementById("form_info_container").style.display = 'none';
+            // console.log(JSON.stringify(ships_array));
+            shoot(url, 2, "ships=" + JSON.stringify(ships_array) + "&id=" + player_id, "POST");
         }
     });
 
@@ -52,24 +60,18 @@
     {
         if (this.readyState == 4 && this.status == 200)
         {
-            // console.log(this.responseText);
-            let response = JSON.parse(this.responseText);
-            console.log(response.points);
-            response.points.forEach(p => 
-            {
-                document.getElementById("el_" + p).classList.add("back_blue");
-            });
+            console.log(this.responseText);
             // document.getElementById("el_" + id).classList.add("back_blue");//style.background = this.responseText;
         }
     }
 
-    // shoot(1);
+    
 
     //hanging eventListeners for every element on click event
     elements.forEach(e => e.addEventListener("click", function () 
     {
         //we can make a move only if both ids are set
-        if (player_id && oponent_id && configDone)
+        if (player_id && opponent_id && configDone)
         {
             let local_id = this.id.split("_")[1];
             console.log(local_id);
@@ -80,10 +82,11 @@
 
     
 
-    function shoot(id)
+    function shoot(url, opponent_id, args, method)
     {
         //async ajax GET request
-        request.open("GET", url, true);
+        request.open(method, url, true);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         //send request
-        request.send();
+        request.send(args);
     }
