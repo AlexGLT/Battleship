@@ -6,7 +6,7 @@
     <title>Sea Battle</title>
     <link rel="stylesheet" href="./css/index.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="./favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./img/favicon.png" type="image/x-icon">
 </head>
 <body >
     <div class = "main_coontainer">
@@ -39,7 +39,7 @@
                     echo "<div class = 'line' id = 'opponent_line_" . ($i) . "'>";
                     for ($j = 0; $j < $height; $j++)
                     {
-                            echo "<div class = 'element opponent_element' id = 'opponent_el_" . ($i * $width + $j) . "'></div>";
+                        echo "<div class = 'element opponent_element' id = 'opponent_el_" . ($i * $width + $j) . "'></div>";
                     }
                     echo "</div>";
                 }
@@ -57,11 +57,14 @@
             <button type = "button" id = "change_dir_btn">Change direction</button>
             <div id = "msg"></div>
         </div>
-        </div>
+    </div>
 
     <script src = "./js/ship_config.js"></script>
     <script src = "./js/index.js"></script>
+<<<<<<< HEAD
     <script src = "./js/randomize.js"></script>
 
+=======
+>>>>>>> 65182abbd4496bd12ec043df83fbfeb0a6f60323
 </body>
 </html>

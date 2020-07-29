@@ -1,4 +1,3 @@
-
 //array of 'ships'
 let ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
@@ -78,7 +77,6 @@ function checkBricks(id)
     }
     else
     {
-        // console.log("kek");
         canPlace = true;
         ship_place = elements.filter(e => 
         {
@@ -240,4 +238,3 @@ function checkCollisions(dir, point, len)
     }
     return true;
 }
-
