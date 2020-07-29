@@ -1,17 +1,9 @@
 <?php
-<<<<<<< HEAD
-    // var_dump($_POST);
-    $data = json_decode($_POST['ships']);
-    $client_id = $_POST['id'];
-    print_r($data->ships);
-    echo $id;
-?>  
-=======
-    // if($_SERVER['REQUEST_METHOD'] != "POST")
-    // {
-    //     header("location: index.php");
-    //     die("Error");
-    // }
+    if($_SERVER['REQUEST_METHOD'] != "POST")
+    {
+        header("location: index.php");
+        die("Error");
+    }
 
     require "./includes/db.php";
 
@@ -41,4 +33,3 @@
     echo $rows->rowCount();
 
     ?>
->>>>>>> 248ea8d5a0605805262517c8c51c5a31e0d54c55
