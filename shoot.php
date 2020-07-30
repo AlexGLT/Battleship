@@ -14,7 +14,7 @@
     //     echo json_encode(array("success" => "Not your attempt!"));
     //     die();
     // }
-
+    
     $sql = "INSERT INTO hits (point, player_id) VALUES (?, ?)";
 
     $row = executeQuery($db, $sql, [$point, $client_id]);
@@ -29,6 +29,9 @@
     }
     else
     {
+        $sql = "UPDATE duel SET active = ?";
+        $row = executeQuery($db, $sql, [$opponent_id])->fetch(PDO::FETCH_ASSOC);
+
         echo json_encode(array("success" => "false"));
     }
 ?>
