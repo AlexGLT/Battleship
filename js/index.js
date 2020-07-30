@@ -8,6 +8,8 @@
     let shoot_url = "shoot.php";
     let ship_config_url = "ship_config.php";
     let check_activity_url = "check_activity.php";
+    let clear_db_url = "clear_db.php";
+    let check_duel_url = "check_duel.php";
 
     let id = 0;
     let interval;
@@ -18,11 +20,18 @@
     let client_id_input = document.getElementById("client_id");
     let opponent_id_input = document.getElementById("opponent_id");
 
+    let turn_msg = document.getElementById("turn");
+
     let form_submit_btn = document.getElementById("form_submit");
 
     let shoot_request = new XMLHttpRequest();
     let update_request = new XMLHttpRequest();
+    let delete_request = new XMLHttpRequest();
+    let check_duel_request = new XMLHttpRequest();
 
+    //already shot elements
+    dead_elements = new Array(height * width);
+    dead_elements.fill(false);
 
     form_submit_btn.addEventListener("click", function() 
     {
@@ -37,6 +46,8 @@
             {
                 e.classList.remove("back_blue");
             });
+
+            clear_db(clear_db_url, "client_id=" + client_id, "POST");
 
             document.getElementById("randomBtn").removeEventListener("click", randomBtnlistener);
             container.removeEventListener('mouseleave', containerLeaveListener);
@@ -55,6 +66,8 @@
                     e.classList.add("back_blue");
                 }
             });
+
+            check_duel(check_duel_url, "client_id=" + client_id + "&opponent_id=" + opponent_id, "POST");
 
             //hide the form. We don't need it anymore.
             document.getElementById("form_info_container").style.display = 'none';
@@ -144,6 +157,36 @@
         }
     }
 
+    check_duel_request.onreadystatechange = function()
+    {
+        if (this.readyState == 4 && this.status == 200)
+        {
+            console.log(this.responseText);
+        }
+        else
+        {
+            if (this.readyState == 4)
+            {
+                console.log("duel request status: " + this.status);
+            }
+        }
+    }
+
+    delete_request.onreadystatechange = function()
+    {
+        if (this.readyState == 4 && this.status == 200)
+        {
+            console.log(this.responseText);
+        }
+        else
+        {
+            if (this.readyState == 4)
+            {
+                console.log("delete request status: " + this.status);
+            }
+        }
+    }
+
     //hanging eventListeners for every element on click event
     elements.forEach(e => e.addEventListener("click", function () 
     {
@@ -151,12 +194,16 @@
         if (client_id && opponent_id && configDone && can_fire)
         {
             let local_id = this.id.split("_")[2];
-            id = local_id;
-            clearInterval(interval);
-            shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
-            interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
-            null, "GET");}, 1000);
-            can_fire = false;
+            if (!dead_elements[local_id])
+            {
+                id = local_id;
+                clearInterval(interval);
+                shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
+                dead_elements[local_id] = true;
+                interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
+                null, "GET");}, 1000);
+                can_fire = false;
+            }
         }
     }));
 
@@ -187,4 +234,39 @@
         
         //send request
         request.send(args);
+    }
+
+    function check_duel(url, args, method)
+    {
+        //async ajax GET request
+        check_duel_request.open(method, url, true);
+        if(method == "POST")
+            check_duel_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+        //send request
+        check_duel_request.send(args);
+    }
+
+    function clear_db(url, args, method)
+    {
+        //async ajax GET request
+        delete_request.open(method, url, true);
+        if(method == "POST")
+            delete_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+        //send request
+        delete_request.send(args);
+    }
+
+    function set_attempt(state)
+    {
+        can_fire = state;
+        if (can_fire)
+        {
+            turn_msg.innerHTML("Your attempt");
+        }
+        else
+        {
+            turn_msg.innerHTML("Your opponent's attempt");
+        }
     }
