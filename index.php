@@ -8,7 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="./img/favicon.png" type="image/x-icon">
 </head>
-<body >
+<body>
+    <div id = "attempt">Your turn</div>
     <div class = "main_coontainer">
         <div class = "container" id = "client">
             <?php

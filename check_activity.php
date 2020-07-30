@@ -16,4 +16,9 @@
     {
         echo json_encode(array("can_fire" => "true", "point" => $row["point"]));
     }
+
+    //SELECT ship_id FROM ships WHERE player_id = ? AND point = ?;
+    //SELECT hit FROM ships WHERE ship_id = ?; 
+
 ?>
+
