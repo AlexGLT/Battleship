@@ -32,6 +32,18 @@ body {
     transition: 0.25s;
 }
 
+.ship_element {
+    width: 40px;
+    height: 40px;
+    border: #00bfff solid 1.5px;
+    border-radius: 10%;
+    transition: 0.25s;
+}
+
+.ship_element:hover {
+    background: #b3ecff;
+}
+
 .element:hover {
     background: #b3ecff;
 }
