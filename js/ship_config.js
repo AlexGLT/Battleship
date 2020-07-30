@@ -47,11 +47,11 @@ let elements = [...document.getElementsByClassName("client_element")];
 //    e.addEventListener("mouseover", element_mouseover_listener);
 // });
 
-// function element_mouseover_listener()
-// {
-//     el_id = parseInt(this.id.split("_")[2]);
-//     checkBricks(el_id);
-// }
+function element_mouseover_listener()
+{
+    el_id = parseInt(this.id.split("_")[2]);
+    checkBricks(el_id);
+}
 
 
 function checkBricks(id)
@@ -117,12 +117,12 @@ function checkBricks(id)
         //mechanism to avoid collisions
         if (!checkCollisions(dir, currentElements[0], ship))
         {
-            console.log("collision");
+            // console.log("collision");
             canPlace = false;
         }
         else
         {
-            console.log("ok");
+            // console.log("ok");
         }
 
         //if there are collisions or another troubles - indicate
@@ -155,7 +155,7 @@ function ship_place_click_listener()
         {
             if (e != -1)
             {
-                console.log(e);
+                // console.log(e);
                 matrix[e] = true;
                 document.getElementById("client_el_" + e).classList.add("back_blue");
             }
@@ -185,7 +185,7 @@ function ship_place_click_listener()
 function change_dir_click_listener()
 {
     dir = !dir;
-    console.log(dir);
+    // console.log(dir);
 }
 
 //function to check collisions between current waiting to be placed ship
@@ -231,7 +231,7 @@ function checkCollisions(dir, point, len)
             // - we can't place new here
             if (matrix[index])
             {
-                console.log("collided on i = " + i + " j = " + j);
+                // console.log("collided on i = " + i + " j = " + j);
                 return false;
             }
         }
