@@ -60,8 +60,8 @@
     </div>
 
     <script src = "./js/ship_config.js"></script>
+    <script src = "./js/randomize.js"></script>
     <script src = "./js/index.js"></script>
-    <!-- <script src = "./js/randomize.js"></script> -->
 
 </body>
 </html>

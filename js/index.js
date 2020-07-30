@@ -38,6 +38,9 @@
                 e.classList.remove("back_blue");
             });
 
+            document.getElementById("randomBtn").removeEventListener("click", randomBtnlistener);
+            container.removeEventListener('mouseleave', containerLeaveListener);
+
             interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
             null, "GET");}, 1000);
             
@@ -59,6 +62,28 @@
             send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&id=" + client_id, "POST");
         }
     });
+
+    container.addEventListener('mouseleave', containerLeaveListener);
+
+    function containerLeaveListener()
+    {
+        container.classList.remove("back_red");
+        ship_place.forEach(p => 
+        {
+            p.classList.remove("back_red");
+            p.classList.remove("back_blue");
+        });
+    }
+
+    //eventListener for 'Randomize' button
+    document.getElementById("randomBtn").addEventListener("click", randomBtnlistener);
+
+    function randomBtnlistener()
+    {
+        randomize();
+        configDone = true;
+        document.getElementById("msg").innerHTML = "You're done!";
+    } 
 
     //configuring callback for ajax request
     request.onreadystatechange = function() 

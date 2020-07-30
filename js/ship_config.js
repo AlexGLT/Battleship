@@ -42,10 +42,10 @@ let container = document.getElementById("client");
 let elements = [...document.getElementsByClassName("client_element")];
 
 //hanging eventListeners on 'mouseover' event to handle position issues
-// elements.forEach(e => 
-// {
-//    e.addEventListener("mouseover", element_mouseover_listener);
-// });
+elements.forEach(e => 
+{
+   e.addEventListener("mouseover", element_mouseover_listener);
+});
 
 function element_mouseover_listener()
 {
@@ -135,13 +135,22 @@ function checkBricks(id)
         }
 
         container.classList.remove(["back_red"]);
+
+        for (let i = 0; i < height * width; i++)
+        {
+            if (matrix[i])
+            {
+                document.getElementById("client_el_" + i).classList.add("back_blue");
+            }
+        }
+
     }
 }
 
-// elements.forEach(e => 
-// {
-//     e.addEventListener("click", ship_place_click_listener);
-// });
+elements.forEach(e => 
+{
+    e.addEventListener("click", ship_place_click_listener);
+});
 
 
 function ship_place_click_listener()
@@ -164,11 +173,7 @@ function ship_place_click_listener()
         {
             configDone = true;
             document.getElementById("msg").innerHTML = "You're done!";
-            elements.forEach(e => 
-            {
-                e.removeEventListener("mouseover", element_mouseover_listener);
-                e.removeEventListener("click", ship_place_click_listener);
-            });
+            
             // console.log(ships_array);
         }
         else
@@ -178,9 +183,21 @@ function ship_place_click_listener()
     }
 } 
 
+function deleteListeners()
+{
+    elements.forEach(e => 
+    {
+        //OK
+        e.removeEventListener("mouseover", element_mouseover_listener);
+
+        e.removeEventListener("click", ship_place_click_listener);
+    });
+    document.getElementById("change_dir_btn").removeEventListener("click", change_dir_click_listener);
+}
+
 //toggle direction (horizontal / vertical)
 
-//document.getElementById("change_dir_btn").addEventListener("click", change_dir_click_listener);
+document.getElementById("change_dir_btn").addEventListener("click", change_dir_click_listener);
 
 function change_dir_click_listener()
 {
