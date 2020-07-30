@@ -61,10 +61,7 @@
 
     <script src = "./js/ship_config.js"></script>
     <script src = "./js/index.js"></script>
-<<<<<<< HEAD
-    <script src = "./js/randomize.js"></script>
+    <!-- <script src = "./js/randomize.js"></script> -->
 
-=======
->>>>>>> 65182abbd4496bd12ec043df83fbfeb0a6f60323
 </body>
 </html>

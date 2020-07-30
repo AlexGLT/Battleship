@@ -20,6 +20,10 @@
 
     let form_submit_btn = document.getElementById("form_submit");
 
+    let shoot_request = new XMLHttpRequest();
+    let update_request = new XMLHttpRequest();
+
+
     form_submit_btn.addEventListener("click", function() 
     {
         //allow click only if both ids are set
@@ -34,14 +38,13 @@
                 e.classList.remove("back_blue");
             });
 
-            
-            
+            interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
+            null, "GET");}, 1000);
             
             elements.forEach(e => e.classList.remove("back_blue"));
 
             opponent_elements = [...document.getElementsByClassName("opponent_element")];
 
-            // let matr_index = 0;
             opponent_elements.forEach(e => 
             {
                 if (matrix[parseInt(e.id.split("_")[2])])
@@ -62,44 +65,59 @@
     {
         if (this.readyState == 4 && this.status == 200)
         {
-            console.log(this.responseText);
+            console.log("submit request: " + this.responseText);
+        }
+    }
 
-            // console.log(id);
-
+    shoot_request.onreadystatechange = function()
+    {
+        if (this.readyState == 4 && this.status == 200)
+        {
+            console.log("shoot request: " + this.responseText);
             if (JSON.parse(this.responseText).success === "true")
             {
-                
                 document.getElementById("client_el_" + id).classList.add("back_red");
             }
             else if (JSON.parse(this.responseText).success === "false")
             {
                 document.getElementById("client_el_" + id).classList.add("back_blue");
             }
-            else if (JSON.parse(this.responseText).can_fire === "true")
+        }
+    }
+
+    update_request.onreadystatechange = function()
+    {
+        if (this.readyState == 4 && this.status == 200)
+        {
+            console.log("update request: " + this.responseText);
+            if (JSON.parse(this.responseText).can_fire === "true")
             {
-                // clearInterval(interval);
+                clearInterval(interval);
                 can_fire = true;
 
                 let point = JSON.parse(this.responseText).point;
-
-                if (matrix[point])
+                if (point)
                 {
-                    document.getElementById("opponent_el_" + point).classList.add("back_red");
+                    if (matrix[point])
+                    {
+                        document.getElementById("opponent_el_" + point).classList.add("back_red");
+                    }
+                    else
+                    {
+                        document.getElementById("opponent_el_" + point).classList.add("back_miss");
+                    }
                 }
                 else
                 {
-                    document.getElementById("opponent_el_" + point).classList.add("back_miss");
+                    can_fire = true;
                 }
             }
             else if (JSON.parse(this.responseText).can_fire === "false")
             {
-                // interval = setInterval(function() {check_activity(check_activity_url, null, "GET");}, 2500);
                 can_fire = false;
             }
         }
     }
-
-    // send_request(1);
 
     //hanging eventListeners for every element on click event
     elements.forEach(e => e.addEventListener("click", function () 
@@ -109,16 +127,30 @@
         {
             let local_id = this.id.split("_")[2];
             id = local_id;
-            // id = "point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id
-            send_request(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
-            // interval = setInterval(function() {check_activity(check_activity_url, null, "GET");}, 2500);
+            clearInterval(interval);
+            shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
+            interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
+            null, "GET");}, 1000);
             can_fire = false;
         }
     }));
 
     function check_activity(url, args, method)
     {
-        send_request(url + "?client_id=" + client_id + "&opponent_id=" + opponent_id, args, method);
+        update_request.open(method, url, true);
+        if(method == "POST")
+            update_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+        update_request.send(args);
+    }
+
+    function shoot(url, args, method)
+    {
+        shoot_request.open(method, url, true);
+        if(method == "POST")
+            shoot_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+        shoot_request.send(args);
     }
 
     function send_request(url, args, method)
