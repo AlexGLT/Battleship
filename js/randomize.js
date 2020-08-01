@@ -55,7 +55,6 @@ function randomize()
             
         }
 
-
         currentElements.forEach(e => 
         {
             if (e != -1)
@@ -79,11 +78,7 @@ function randomize()
 
     currentShipIndex = ships.length - 1;
     ship_place = [];
-    // canPlace = true;
-    deleteListeners();
 }
-
-// randomize();
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -146,7 +141,6 @@ function checkPlace(len, dir)
         return null;
     }
 
-    // console.log("len: " + len);
     let toDelete = [];
     places.forEach(p =>
     {

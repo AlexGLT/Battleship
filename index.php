@@ -53,7 +53,8 @@
         
             <label class = "form_info_label" for = "opponent_id">Enter your opponent's ID:</label>
             <input class = "id_input" id = "opponent_id" type = "number" min = "1" max = "10" step = "1" value = "2">
-            <button id = "form_submit" type = "button">Submit</button> 
+            <button id = "form_submit" class = "form_submit" type = "button">Create the Game</button> 
+            <button id = "form_join" class = "form_submit" type = "button">Join the Game</button> 
             <button id = "randomBtn" type = "button">Randomize</button>
             <button type = "button" id = "change_dir_btn">Change direction</button>
             <div id = "msg"></div>
@@ -62,7 +63,9 @@
 
     <script src = "./js/ship_config.js"></script>
     <script src = "./js/randomize.js"></script>
+    <script src = "./js/http_requests.js"></script>
     <script src = "./js/index.js"></script>
+    <script src = "./js/event_listeners.js"></script>
 
 </body>
 </html>
