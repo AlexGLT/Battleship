@@ -121,13 +121,11 @@ body {
     background: #349ce2;
 }
 
-#randomBtn {
-    /* height: 50px; */
-    /* margin-top: 2%;
-    margin-bottom: 2%; */
-}
-
 .back_miss{
     background-color: #d9dadc;
 }
 
+#attempt {
+    text-align: center;
+    font-size: 50px;
+}
