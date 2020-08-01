@@ -9,6 +9,26 @@ request.onreadystatechange = function()
     if (this.readyState == 4 && this.status == 200)
     {
         console.log("submit request: " + this.responseText);
+
+        if (this.responseText == "")
+        {
+            responseError = false;
+            return;
+        }
+        let response = JSON.parse(this.responseText);
+
+        if (response != null)
+        {
+            if (response.duel_id)
+            {
+                console.log("duel id: " + response.duel_id);
+            }
+            else if (response.err)
+            {
+                console.log("Error");
+                responseError = true;
+            }
+        }
     }
     else
     {
@@ -117,10 +137,10 @@ function shoot(url, args, method)
     shoot_request.send(args);
 }
 
-function send_request(url, args, method)
+function send_request(url, args, method, type)
 {
     //async ajax GET request
-    request.open(method, url, true);
+    request.open(method, url, type);
     if(method == "POST")
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     
