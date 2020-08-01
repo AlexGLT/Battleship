@@ -9,6 +9,12 @@
     let clear_db_url = "clear_db.php";
     let check_duel_url = "check_duel.php";
 
+    let duel_id;
+
+    let to_duel_id;
+
+    let responseError;
+
     let id = 0;
     let interval;
 
@@ -18,9 +24,11 @@
     let client_id_input = document.getElementById("client_id");
     let opponent_id_input = document.getElementById("opponent_id");
 
-    let turn_msg = document.getElementById("turn");
+    let turn_msg = document.getElementById("attempt");
 
-    let form_submit_btn = document.getElementById("form_submit");
+    let form_create = document.getElementById("form_create");
+
+    let form_join = document.getElementById("form_join");
 
     //already shot elements
     dead_elements = new Array(height * width);
