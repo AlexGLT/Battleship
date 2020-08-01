@@ -18,8 +18,8 @@
 
     executeQuery($db, $sql, [$client_id]);
 
-    $sql = "DELETE FROM duel WHERE player_1 = ? OR player_2 = ?";
+    // $sql = "DELETE FROM duel WHERE player_1 = ? OR player_2 = ?";
 
-    executeQuery($db, $sql, [$client_id, $client_id]);
+    // executeQuery($db, $sql, [$client_id, $client_id]);
 
 ?>

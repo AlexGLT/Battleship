@@ -29,8 +29,8 @@
     }
     else
     {
-        $sql = "UPDATE duel SET active = ?";
-        $row = executeQuery($db, $sql, [$opponent_id])->fetch(PDO::FETCH_ASSOC);
+        $sql = "UPDATE duel SET active = ? WHERE (player_1 = ? AND player_2 = ?) OR (player_1 = ? AND player_2 = ?)";
+        $row = executeQuery($db, $sql, [$opponent_id, $client_id, $opponent_id, $opponent_id, $client_id]);
 
         echo json_encode(array("success" => "false"));
     }
