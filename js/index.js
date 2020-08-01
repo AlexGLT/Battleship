@@ -51,9 +51,8 @@
 
             document.getElementById("randomBtn").removeEventListener("click", randomBtnlistener);
             container.removeEventListener('mouseleave', containerLeaveListener);
-
-            interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
-            null, "GET");}, 1000);
+            
+            setTimeout(function() {check_duel(check_duel_url, "client_id=" + client_id + "&opponent_id=" + opponent_id, "POST");}, 1000);
             
             elements.forEach(e => e.classList.remove("back_blue"));
 
@@ -66,8 +65,8 @@
                     e.classList.add("back_blue");
                 }
             });
-
-            check_duel(check_duel_url, "client_id=" + client_id + "&opponent_id=" + opponent_id, "POST");
+            
+            // check_duel(check_duel_url, "client_id=" + client_id + "&opponent_id=" + opponent_id, "POST");
 
             //hide the form. We don't need it anymore.
             document.getElementById("form_info_container").style.display = 'none';
@@ -132,12 +131,13 @@
             {
                 clearInterval(interval);
                 can_fire = true;
-
                 let point = JSON.parse(this.responseText).point;
                 if (point)
                 {
                     if (matrix[point])
                     {
+                        
+                        console.log(point);
                         document.getElementById("opponent_el_" + point).classList.add("back_red");
                     }
                     else
@@ -153,6 +153,12 @@
             else if (JSON.parse(this.responseText).can_fire === "false")
             {
                 can_fire = false;
+                if (matrix[point])
+                    {
+                        
+                        console.log(point);
+                        document.getElementById("opponent_el_" + point).classList.add("back_red");
+                    }
             }
         }
     }
@@ -162,6 +168,17 @@
         if (this.readyState == 4 && this.status == 200)
         {
             console.log(this.responseText);
+            if (JSON.parse(this.responseText).can_fire === "true")
+            {
+                can_fire = true;
+            }
+            else if (JSON.parse(this.responseText).can_fire === "false")
+            {
+                can_fire = false;
+
+                interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
+                null, "GET");}, 1000);
+            }
         }
         else
         {
