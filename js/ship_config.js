@@ -41,18 +41,6 @@ let container = document.getElementById("client");
 //getting all elements as array (initialy HTMLCollection)
 let elements = [...document.getElementsByClassName("client_element")];
 
-//hanging eventListeners on 'mouseover' event to handle position issues
-elements.forEach(e => 
-{
-   e.addEventListener("mouseover", element_mouseover_listener);
-});
-
-function element_mouseover_listener()
-{
-    el_id = parseInt(this.id.split("_")[2]);
-    checkBricks(el_id);
-}
-
 
 function checkBricks(id)
 {
@@ -134,7 +122,7 @@ function checkBricks(id)
             });
         }
 
-        container.classList.remove(["back_red"]);
+        container.classList.remove("back_red");
 
         for (let i = 0; i < height * width; i++)
         {
@@ -145,64 +133,6 @@ function checkBricks(id)
         }
 
     }
-}
-
-elements.forEach(e => 
-{
-    e.addEventListener("click", ship_place_click_listener);
-});
-
-
-function ship_place_click_listener()
-{
-    //if user can't place next ship OR all ships are already places
-    //do nothing
-    if (canPlace && !configDone)
-    {
-        ships_array.ships[currentShipIndex] = currentElements;
-        currentElements.forEach(e => 
-        {
-            if (e != -1)
-            {
-                // console.log(e);
-                matrix[e] = true;
-                document.getElementById("client_el_" + e).classList.add("back_blue");
-            }
-        });
-        if (currentShipIndex + 1 == ships.length)
-        {
-            configDone = true;
-            document.getElementById("msg").innerHTML = "You're done!";
-            
-            // console.log(ships_array);
-        }
-        else
-        {
-            ship = ships[++currentShipIndex];
-        }
-    }
-} 
-
-function deleteListeners()
-{
-    elements.forEach(e => 
-    {
-        //OK
-        e.removeEventListener("mouseover", element_mouseover_listener);
-
-        e.removeEventListener("click", ship_place_click_listener);
-    });
-    document.getElementById("change_dir_btn").removeEventListener("click", change_dir_click_listener);
-}
-
-//toggle direction (horizontal / vertical)
-
-document.getElementById("change_dir_btn").addEventListener("click", change_dir_click_listener);
-
-function change_dir_click_listener()
-{
-    dir = !dir;
-    // console.log(dir);
 }
 
 //function to check collisions between current waiting to be placed ship

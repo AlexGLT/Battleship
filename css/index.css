@@ -62,7 +62,7 @@ body {
 
 #form_info_container {
     width: 200px;
-    height: 330px;
+    height: 400px;
     margin-top: 0;
     order: 2;
     
@@ -104,7 +104,7 @@ body {
     width: 200px;
 }
 
-#form_submit, #change_dir_btn, #randomBtn {
+#form_submit, #change_dir_btn, #randomBtn, #form_join {
     width: 120px;
     /* width: 100px; */
     margin-top: 2%;
@@ -117,7 +117,7 @@ body {
     padding: 3px;
 }
 
-#form_submit:hover, #change_dir_btn:hover, #randomBtn:hover {
+#form_submit:hover, #change_dir_btn:hover, #randomBtn:hover, #form_join:hover {
     background: #349ce2;
 }
 
