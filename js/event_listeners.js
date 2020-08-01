@@ -6,61 +6,28 @@ document.getElementById("randomBtn").addEventListener("click", random_btn_listen
 
 let form_submit = [...document.getElementsByClassName("form_submit")];
 
-form_submit.forEach(e => 
+function submit(method)
 {
-    e.addEventListener("click", function()
-    {
-        deleteListeners();
-        if (client_id && opponent_id && configDone)
-        {
-            elements.forEach(e => e.addEventListener("click", function () 
-            {
-                //we can make a move only if both ids are set
-                if (client_id && opponent_id && configDone && can_fire)
-                {
-                    let local_id = this.id.split("_")[2];
-                    if (!dead_elements[local_id])
-                    {
-                        id = local_id;
-                        clearInterval(interval);
-                        shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
-                        dead_elements[local_id] = true;
-                        interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
-                        null, "GET");}, 1000);
-                        can_fire = false;
-                    }
-                }
-            }));                
-        }
-    });
-});
-
-//hanging eventListeners on 'mouseover' event to handle position issues
-elements.forEach(e => 
-{
-    e.addEventListener("mouseover", element_mouseover_listener);
-});
-
-elements.forEach(e => 
-{
-    e.addEventListener("click", ship_place_click_listener);
-});
-
-container.addEventListener('mouseleave', container_leave_listener);
-
-form_submit_btn.addEventListener("click", function() 
-{
-    //allow click only if both ids are set and all ships placed
     if (client_id_input.value && opponent_id_input.value && configDone)
     {
+        deleteListeners();
+
         client_id = client_id_input.value;
         opponent_id = opponent_id_input.value;
+        to_duel_id = opponent_id;
 
-        clear_db(clear_db_url, "client_id=" + client_id, "POST");
+        if (method)
+        {
+            send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&client_id=" + client_id, "POST", false);        
+        }
+        else
+        {
+            send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&client_id=" + client_id + "&duel_id=" + to_duel_id + "&join=" + true, "POST", false);
+        }   
 
-        interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
-        null, "GET");}, 1000);
-        
+        if (responseError)
+        {return;}
+
         //==========================transfer client's ships on the right side
         elements.forEach(e => e.classList.remove("back_blue"));
 
@@ -75,15 +42,54 @@ form_submit_btn.addEventListener("click", function()
         });
         //==========================
 
-        check_duel(check_duel_url, "client_id=" + client_id + "&opponent_id=" + opponent_id, "POST");
+        elements.forEach(e => e.addEventListener("click", function () 
+        {
+            //we can make a move only if both ids are set
+            if (client_id && opponent_id && configDone && can_fire)
+            {
+                let local_id = this.id.split("_")[2];
+                if (!dead_elements[local_id])
+                {
+                    id = local_id;
+                    clearInterval(interval);
+                    shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
+                    dead_elements[local_id] = true;
+                    interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
+                    null, "GET");}, 1000);
+                    can_fire = false;
+                }
+            }
+        })); 
 
-        //hide the form. We don't need it anymore.
         document.getElementById("form_info_container").style.display = 'none';
         
-        send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&id=" + client_id, "POST");
+    
     }
+}
+
+
+//hanging eventListeners on 'mouseover' event to handle position issues
+elements.forEach(e => 
+{
+    e.addEventListener("mouseover", element_mouseover_listener);
 });
 
+elements.forEach(e => 
+{
+    e.addEventListener("click", ship_place_click_listener);
+});
+
+container.addEventListener('mouseleave', container_leave_listener);
+
+form_create.addEventListener("click", function()
+{
+    submit(true);
+});
+
+form_join.addEventListener("click", function()
+{
+    submit(false);
+});
 
 function element_mouseover_listener()
 {

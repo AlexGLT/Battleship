@@ -50,7 +50,7 @@ body {
 
 #form_info_container {
     width: 200px;
-    height: 400px;
+    height: 450px;
     margin-top: 0;
     order: 2;
     
@@ -72,7 +72,7 @@ body {
     font-family: 'Noto Sans TC', sans-serif;
 }
 
-#form_submit {
+.form_submit {
     width: 100px;
     /* height: 500px; */
     background: #1aa3ff;
@@ -83,7 +83,7 @@ body {
     margin-bottom: 2%; */
 }
 
-#form_submit:hover {
+.form_submit:hover {
     background: #349ce2;
 }
 
@@ -92,7 +92,7 @@ body {
     width: 200px;
 }
 
-#form_submit, #change_dir_btn, #randomBtn, #form_join {
+.form_submit, #change_dir_btn, #randomBtn {
     width: 120px;
     /* width: 100px; */
     margin-top: 2%;
@@ -105,7 +105,7 @@ body {
     padding: 3px;
 }
 
-#form_submit:hover, #change_dir_btn:hover, #randomBtn:hover, #form_join:hover {
+.form_submit:hover, #change_dir_btn:hover, #randomBtn:hover {
     background: #349ce2;
 }
 

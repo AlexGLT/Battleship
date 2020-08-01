@@ -51,9 +51,9 @@
             <label class = "form_info_label" for = "client_id">Enter your ID:</label>
             <input class = "id_input" id = "client_id" type = "number" min = "1" max = "10" step = "1" value = "1">
         
-            <label class = "form_info_label" for = "opponent_id">Enter your opponent's ID:</label>
+            <label class = "form_info_label" for = "opponent_id">Enter Duel ID:</label>
             <input class = "id_input" id = "opponent_id" type = "number" min = "1" max = "10" step = "1" value = "2">
-            <button id = "form_submit" class = "form_submit" type = "button">Create the Game</button> 
+            <button id = "form_create" class = "form_submit" type = "button">Create the Game</button> 
             <button id = "form_join" class = "form_submit" type = "button">Join the Game</button> 
             <button id = "randomBtn" type = "button">Randomize</button>
             <button type = "button" id = "change_dir_btn">Change direction</button>
