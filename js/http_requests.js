@@ -30,13 +30,6 @@ request.onreadystatechange = function()
             }
         }
     }
-    else
-    {
-        if (this.readyState == 4)
-        {
-            console.log("submit request status: " + this.status);
-        }
-    }
 }
 
 shoot_request.onreadystatechange = function()
@@ -47,11 +40,41 @@ shoot_request.onreadystatechange = function()
         if (JSON.parse(this.responseText).success === "true")
         {
             document.getElementById("client_el_" + id).classList.add("back_red");
+            let points = JSON.parse(this.responseText).points;
+            remove_dead(points);
         }
         else if (JSON.parse(this.responseText).success === "false")
         {
             document.getElementById("client_el_" + id).classList.add("back_blue");
         }
+    }
+}
+
+function remove_dead(points)
+{
+    if (points)
+    {
+        points.forEach(p => 
+        {
+            let p_i = Math.floor(p / height);
+            let p_j = p % width;
+
+            for (let i = p_i - 1; i <= p_i + 1; i++)
+            {
+                for (let j = p_j - 1; j <= p_j + 1; j++)
+                {
+                    if (i < 0 || j < 0 || i > height - 1 || j > width - 1)
+                    {
+                        break;
+                    }
+                    let index = i * height + j;
+                    if (!dead_elements[index])
+                    {
+                        elements[index].classList.add("back_miss");
+                    }
+                }
+            }
+        });
     }
 }
 
@@ -62,7 +85,7 @@ update_request.onreadystatechange = function()
         console.log("update request: " + this.responseText);
         
         let points = JSON.parse(this.responseText).points;
-        console.log(points);
+        // console.log(points);
         
         if (JSON.parse(this.responseText).can_fire === "true")
         {
@@ -96,7 +119,7 @@ opponent_connection_check_request.onreadystatechange = function()
     {
         if (JSON.parse(this.responseText).opponent_connected === "true")
         {
-            console.log("opponent connect");
+            console.log("opponent connected");
 
             clearInterval(interval);
             
@@ -104,7 +127,7 @@ opponent_connection_check_request.onreadystatechange = function()
         }
         else if (JSON.parse(this.responseText).opponent_connected === "false")
         {
-            console.log("opponent didn't connect");
+            console.log("opponent isn't connected");
         }
     }
 }

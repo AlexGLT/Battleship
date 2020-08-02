@@ -31,8 +31,9 @@
 
     if ($result->rowCount() != 0)
     {
-        $sql = "SELECT * FROM deck WHERE ship_id = (SELECT ship_id FROM deck WHERE point = ? LIMIT 1)";
-        $result = executeQuery($db, $sql, [$point]);
+        // $sql = "SELECT * FROM deck WHERE ship_id = (SELECT ship_id FROM deck WHERE point = ? LIMIT 1)";
+        $sql = "SELECT * FROM deck WHERE ship_id = (SELECT id FROM ship WHERE id IN(SELECT ship_id FROM deck WHERE point = ?) AND duel_id = ? AND player_id = ?)";
+        $result = executeQuery($db, $sql, [$point, $duel_id, $opponent_id]);
         
         while($row = $result->fetch(PDO::FETCH_ASSOC))
         {
