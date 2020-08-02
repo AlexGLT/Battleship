@@ -8,12 +8,11 @@
     let check_activity_url = "check_activity.php";
     let clear_db_url = "clear_db.php";
     let check_duel_url = "check_duel.php";
+    let opponent_connection_check_url = "opponent_connection_check.php";
 
     let duel_id;
 
     let to_duel_id;
-
-    let responseError;
 
     let id = 0;
     let interval;

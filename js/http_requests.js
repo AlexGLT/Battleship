@@ -3,6 +3,7 @@ let shoot_request = new XMLHttpRequest();
 let update_request = new XMLHttpRequest();
 let delete_request = new XMLHttpRequest();
 let check_duel_request = new XMLHttpRequest();
+let opponent_connection_check_request = new XMLHttpRequest();
 
 request.onreadystatechange = function() 
 {
@@ -12,7 +13,7 @@ request.onreadystatechange = function()
 
         if (this.responseText == "")
         {
-            responseError = false;
+            game_start();
             return;
         }
         let response = JSON.parse(this.responseText);
@@ -26,7 +27,6 @@ request.onreadystatechange = function()
             else if (response.err)
             {
                 console.log("Error");
-                responseError = true;
             }
         }
     }
@@ -60,51 +60,56 @@ update_request.onreadystatechange = function()
     if (this.readyState == 4 && this.status == 200)
     {
         console.log("update request: " + this.responseText);
+        
+        let points = JSON.parse(this.responseText).points;
+        console.log(points);
+        
         if (JSON.parse(this.responseText).can_fire === "true")
         {
             clearInterval(interval);
             can_fire = true;
-
-            let point = JSON.parse(this.responseText).point;
-            if (point)
-            {
-                if (matrix[point])
-                {
-                    document.getElementById("opponent_el_" + point).classList.add("back_red");
-                }
-                else
-                {
-                    document.getElementById("opponent_el_" + point).classList.add("back_miss");
-                }
-            }
-            else
-            {
-                can_fire = true;
-            }
         }
         else if (JSON.parse(this.responseText).can_fire === "false")
         {
             can_fire = false;
         }
-    }
-}
 
-check_duel_request.onreadystatechange = function()
-{
-    if (this.readyState == 4 && this.status == 200)
-    {
-        console.log(this.responseText);
-    }
-    else
-    {
-        if (this.readyState == 4)
+        if (points)
         {
-            console.log("duel request status: " + this.status);
+            points.forEach(e => {
+                if (matrix[e])
+                {
+                    document.getElementById("opponent_el_" + e).classList.add("back_red");
+                }
+                else
+                {
+                    document.getElementById("opponent_el_" + e).classList.add("back_miss");
+                }
+            });
         }
     }
 }
 
-delete_request.onreadystatechange = function()
+opponent_connection_check_request.onreadystatechange = function()
+{
+    if (this.readyState == 4 && this.status == 200)
+    {
+        if (JSON.parse(this.responseText).opponent_connected === "true")
+        {
+            console.log("opponent connect");
+
+            clearInterval(interval);
+            
+            game_start();
+        }
+        else if (JSON.parse(this.responseText).opponent_connected === "false")
+        {
+            console.log("opponent didn't connect");
+        }
+    }
+}
+
+delete_request.onreadystatechange = function ()
 {
     if (this.readyState == 4 && this.status == 200)
     {
@@ -148,17 +153,6 @@ function send_request(url, args, method, type)
     request.send(args);
 }
 
-function check_duel(url, args, method)
-{
-    //async ajax GET request
-    check_duel_request.open(method, url, true);
-    if(method == "POST")
-        check_duel_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    
-    //send request
-    check_duel_request.send(args);
-}
-
 function clear_db(url, args, method)
 {
     //async ajax GET request
@@ -168,4 +162,15 @@ function clear_db(url, args, method)
     
     //send request
     delete_request.send(args);
+}
+
+function opponent_connection_check(url, args, method)
+{
+    //async ajax GET request
+    opponent_connection_check_request.open(method, url, true);
+    if(method == "POST")
+        opponent_connection_check_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+    //send request
+    opponent_connection_check_request.send(args);
 }

@@ -1,36 +1,59 @@
 <?php
     require "./includes/db.php";
 
+    session_start();
+
     $point = $_GET['point'];
-    $client_id = $_GET['client_id'];
-    $opponent_id = $_GET['opponent_id'];
-
-    // $sql = "SELECT player_id FROM hits WHERE player_id = ? OR player_id = ? ORDER BY id DESC LIMIT 1";
-
-    // $row = executeQuery($db, $sql, [$client_id, $opponent_id])->fetch(PDO::FETCH_ASSOC);
-
-    // if ($row["player_id"] == $client_id)
-    // {
-    //     echo json_encode(array("success" => "Not your attempt!"));
-    //     die();
-    // }
     
-    $sql = "INSERT INTO hits (point, player_id) VALUES (?, ?)";
+    $duel_id = $_SESSION['duel_id'];
+    $client_id = $_SESSION['client_id'];
+    $opponent_id = $_SESSION['opponent_id'];
 
-    $row = executeQuery($db, $sql, [$point, $client_id]);
+    $sql = "SELECT active FROM duel WHERE id = ?";
 
-    $sql = "UPDATE ships SET hit = true WHERE player_id = ? AND point = ?";
+    $result = executeQuery($db, $sql, [$duel_id])->fetch(PDO::FETCH_ASSOC);
 
-    $row = executeQuery($db, $sql, [$opponent_id, $point]);    
-
-    if ($row->rowCount() != 0)
+    if ($result["active"] == $opponent_id)
     {
-        echo json_encode(array("success" => "true"));
+        echo json_encode(array("success" => "Not your attempt!"));
+        die();
+    }
+    
+    $sql = "INSERT INTO hit (duel_id, player_id, point) VALUES (?, ?, ?)";
+
+    $result = executeQuery($db, $sql, [$duel_id, $client_id, $point]);
+
+    $sql = "UPDATE deck SET hit = true WHERE ship_id in(SELECT id FROM ship WHERE duel_id = ? AND player_id = ?) AND point = ?";
+
+    $result = executeQuery($db, $sql, [$duel_id, $opponent_id, $point]);    
+
+    $points = [];
+
+    if ($result->rowCount() != 0)
+    {
+        $sql = "SELECT * FROM deck WHERE ship_id = (SELECT ship_id FROM deck WHERE point = ? LIMIT 1)";
+        $result = executeQuery($db, $sql, [$point]);
+        
+        while($row = $result->fetch(PDO::FETCH_ASSOC))
+        {
+            if($row["hit"])
+            {
+                array_push($points, $row["point"]);
+            }
+            else
+            {
+                echo json_encode(array("success" => "true"));
+                die();
+            }
+
+        }
+
+        echo json_encode(array("success" => "true", "points" => $points));
     }
     else
     {
-        $sql = "UPDATE duel SET active = ? WHERE (player_1 = ? AND player_2 = ?) OR (player_1 = ? AND player_2 = ?)";
-        $row = executeQuery($db, $sql, [$opponent_id, $client_id, $opponent_id, $opponent_id, $client_id]);
+        $sql = "UPDATE duel SET active = ? WHERE id = ?";
+        $result = executeQuery($db, $sql, [$opponent_id, $duel_id]);
 
         echo json_encode(array("success" => "false"));
     }

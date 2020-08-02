@@ -30,6 +30,10 @@
         
         $_SESSION['duel_id'] = $duel_id;
 
+        $sql = "SELECT creator_id FROM duel WHERE opponent_id = ? AND id = ?";
+        $result = executeQuery($db, $sql, [$client_id, $duel_id])->fetch(PDO::FETCH_ASSOC);
+        
+        $_SESSION["opponent_id"] = $result["creator_id"];
     }
     else
     {
@@ -52,12 +56,15 @@
 
         executeQuery($db, $sql, [$duel_id, $client_id, count($data[$i])]);
 
+        $ship_id = $db->lastInsertId();
+
         for ($j = 0; $j < count($data[$i]); $j++)
         {
             $sql = "INSERT INTO deck(ship_id, point) VALUES(?, ?)";
 
-            executeQuery($db, $sql, [$db->lastInsertId(), $data[$i][$j]]);
+            executeQuery($db, $sql, [$ship_id, $data[$i][$j]]);
         }
     }  
 
+    $_SESSION["opponent_hit_count"] = 0;
 ?>

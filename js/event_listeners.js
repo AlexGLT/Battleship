@@ -18,55 +18,16 @@ function submit(method)
 
         if (method)
         {
-            send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&client_id=" + client_id, "POST", false);        
+            send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&client_id=" + client_id, "POST", false);
+
+            interval = setInterval(function() {opponent_connection_check(opponent_connection_check_url + "?client_id=" + client_id, null, "GET");}, 1000);
         }
         else
         {
             send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&client_id=" + client_id + "&duel_id=" + to_duel_id + "&join=" + true, "POST", false);
-        }   
-
-        if (responseError)
-        {return;}
-
-        //==========================transfer client's ships on the right side
-        elements.forEach(e => e.classList.remove("back_blue"));
-
-        opponent_elements = [...document.getElementsByClassName("opponent_element")];
-
-        opponent_elements.forEach(e => 
-        {
-            if (matrix[parseInt(e.id.split("_")[2])])
-            {
-                e.classList.add("back_blue");
-            }
-        });
-        //==========================
-
-        elements.forEach(e => e.addEventListener("click", function () 
-        {
-            //we can make a move only if both ids are set
-            if (client_id && opponent_id && configDone && can_fire)
-            {
-                let local_id = this.id.split("_")[2];
-                if (!dead_elements[local_id])
-                {
-                    id = local_id;
-                    clearInterval(interval);
-                    shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
-                    dead_elements[local_id] = true;
-                    interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id,
-                    null, "GET");}, 1000);
-                    can_fire = false;
-                }
-            }
-        })); 
-
-        document.getElementById("form_info_container").style.display = 'none';
-        
-    
+        }    
     }
 }
-
 
 //hanging eventListeners on 'mouseover' event to handle position issues
 elements.forEach(e => 
@@ -175,4 +136,42 @@ function deleteListeners()
 
     //delete client container highlight
     document.getElementById("client").removeEventListener('mouseleave', container_leave_listener);
+}
+
+function game_start()
+{
+    //==========================transfer client's ships on the right side
+    elements.forEach(e => e.classList.remove("back_blue"));
+
+    opponent_elements = [...document.getElementsByClassName("opponent_element")];
+
+    opponent_elements.forEach(e => 
+    {
+        if (matrix[parseInt(e.id.split("_")[2])])
+        {
+            e.classList.add("back_blue");
+        }
+    });
+    //==========================
+    interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id, null, "GET");}, 1000);
+
+    elements.forEach(e => e.addEventListener("click", function () 
+    {
+        //we can make a move only if both ids are set
+        if (client_id && opponent_id && configDone && can_fire)
+        {
+            let local_id = this.id.split("_")[2];
+            if (!dead_elements[local_id])
+            {
+                id = local_id;
+                clearInterval(interval);
+                shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
+                dead_elements[local_id] = true;
+                interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id, null, "GET");}, 1000);
+                can_fire = false;
+            }
+        }
+    })); 
+
+    document.getElementById("form_info_container").style.display = 'none';
 }
