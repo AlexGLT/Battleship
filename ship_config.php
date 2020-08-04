@@ -43,8 +43,6 @@
 
         $duel_id = $db->lastInsertId();
 
-        // echo $duel_id;
-
         $_SESSION['duel_id'] = $duel_id;
 
         echo json_encode(array("duel_id" => $duel_id));
@@ -64,7 +62,7 @@
 
             executeQuery($db, $sql, [$ship_id, $data[$i][$j]]);
         }
-    }  
+    }
 
-    $_SESSION["opponent_hit_count"] = 0;
+    $_SESSION["opponent_last_hit_id"] = -1;
 ?>

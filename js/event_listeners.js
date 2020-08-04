@@ -18,13 +18,13 @@ function submit(method)
 
         if (method)
         {
-            send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&client_id=" + client_id, "POST", false);
+            send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&client_id=" + client_id, "POST");
 
             interval = setInterval(function() {opponent_connection_check(opponent_connection_check_url + "?client_id=" + client_id, null, "GET");}, 1000);
         }
         else
         {
-            send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&client_id=" + client_id + "&duel_id=" + to_duel_id + "&join=" + true, "POST", false);
+            send_request(ship_config_url, "ships=" + JSON.stringify(ships_array) + "&client_id=" + client_id + "&duel_id=" + to_duel_id + "&join=" + true, "POST");
         }    
     }
 }
@@ -145,7 +145,7 @@ function game_start()
 
     opponent_elements = [...document.getElementsByClassName("opponent_element")];
 
-    opponent_elements.forEach(e => 
+    opponent_elements.forEach(e =>
     {
         if (matrix[parseInt(e.id.split("_")[2])])
         {
@@ -155,23 +155,24 @@ function game_start()
     //==========================
     interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id, null, "GET");}, 1000);
 
-    elements.forEach(e => e.addEventListener("click", function () 
-    {
-        //we can make a move only if both ids are set
-        if (client_id && opponent_id && configDone && can_fire)
-        {
-            let local_id = this.id.split("_")[2];
-            if (!dead_elements[local_id])
-            {
-                id = local_id;
-                clearInterval(interval);
-                shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
-                dead_elements[local_id] = true;
-                interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id, null, "GET");}, 1000);
-                can_fire = false;
-            }
-        }
-    })); 
+    elements.forEach(e => e.addEventListener("click", elementClick));
 
     document.getElementById("form_info_container").style.display = 'none';
+}
+
+function elementClick ()
+{
+    //we can make a move only if both ids are set
+    if (client_id && opponent_id && configDone && can_fire)
+    {
+    let local_id = this.id.split("_")[2];
+    if (!dead_elements[local_id])
+    {
+        id = local_id;
+        shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
+        elements[local_id].removeEventListener("click", elementClick);
+        dead_elements[local_id] = true;
+        can_fire = false;
+    }
+    }
 }

@@ -40,7 +40,7 @@ let container = document.getElementById("client");
 
 //getting all elements as array (initialy HTMLCollection)
 let elements = [...document.getElementsByClassName("client_element")];
-
+let opponent_elements = [...document.getElementsByClassName("opponent_element")];
 
 function checkBricks(id)
 {

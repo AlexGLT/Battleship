@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="./img/favicon.png" type="image/x-icon">
 </head>
 <body>
-    <div id = "attempt">Your turn</div>
+    <div id = "attempt">Welcome!</div>
     <div class = "main_coontainer">
         <div class = "container" id = "client">
             <?php

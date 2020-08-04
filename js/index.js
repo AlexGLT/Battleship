@@ -1,7 +1,7 @@
     //obtaining array from HTMLCollection
     //let elements = [...document.getElementsByClassName("element")];
 
-    let can_fire = true;
+    let can_fire;
 
     let shoot_url = "shoot.php";
     let ship_config_url = "ship_config.php";
@@ -33,15 +33,20 @@
     dead_elements = new Array(height * width);
     dead_elements.fill(false);
 
-    function set_attempt(state)
-    {
-        can_fire = state;
-        if (can_fire)
+    function set_attempt(opponent_connected)
+    {   if (!opponent_connected)
         {
-            turn_msg.innerHTML("Your attempt");
+            turn_msg.innerHTML = "Duel ID: " + duel_id;
         }
         else
         {
-            turn_msg.innerHTML("Your opponent's attempt");
+            if (can_fire)
+            {
+                turn_msg.innerHTML = "Your attempt";
+            }
+            else
+            {
+                turn_msg.innerHTML = "Your opponent's attempt";
+            }
         }
     }

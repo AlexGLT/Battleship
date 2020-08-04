@@ -10,21 +10,20 @@ request.onreadystatechange = function()
     if (this.readyState == 4 && this.status == 200)
     {
         console.log("submit request: " + this.responseText);
-
+        
         if (this.responseText == "")
         {
             game_start();
             return;
         }
+
         let response = JSON.parse(this.responseText);
 
-        if (response != null)
+        if (response)
         {
-            if (response.duel_id)
-            {
-                console.log("duel id: " + response.duel_id);
-            }
-            else if (response.err)
+            duel_id = response.duel_id;
+
+            if (response.err)
             {
                 console.log("Error");
             }
@@ -41,40 +40,17 @@ shoot_request.onreadystatechange = function()
         {
             document.getElementById("client_el_" + id).classList.add("back_red");
             let points = JSON.parse(this.responseText).points;
-            remove_dead(points);
+            remove_dead(points, elements, dead_elements);
+            can_fire = true;
         }
         else if (JSON.parse(this.responseText).success === "false")
         {
             document.getElementById("client_el_" + id).classList.add("back_blue");
+            
+            interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id, null, "GET");}, 1000);
         }
-    }
-}
-
-function remove_dead(points)
-{
-    if (points)
-    {
-        points.forEach(p => 
-        {
-            let p_i = Math.floor(p / height);
-            let p_j = p % width;
-
-            for (let i = p_i - 1; i <= p_i + 1; i++)
-            {
-                for (let j = p_j - 1; j <= p_j + 1; j++)
-                {
-                    if (i < 0 || j < 0 || i > height - 1 || j > width - 1)
-                    {
-                        break;
-                    }
-                    let index = i * height + j;
-                    if (!dead_elements[index])
-                    {
-                        elements[index].classList.add("back_miss");
-                    }
-                }
-            }
-        });
+        
+        set_attempt(true);
     }
 }
 
@@ -85,17 +61,20 @@ update_request.onreadystatechange = function()
         console.log("update request: " + this.responseText);
         
         let points = JSON.parse(this.responseText).points;
-        // console.log(points);
+        let killed_ships = JSON.parse(this.responseText).killed_ships;
         
         if (JSON.parse(this.responseText).can_fire === "true")
         {
             clearInterval(interval);
+
             can_fire = true;
         }
         else if (JSON.parse(this.responseText).can_fire === "false")
         {
             can_fire = false;
         }
+
+        set_attempt(true);
 
         if (points)
         {
@@ -110,6 +89,8 @@ update_request.onreadystatechange = function()
                 }
             });
         }
+
+        remove_dead(killed_ships, opponent_elements, matrix);
     }
 }
 
@@ -119,15 +100,13 @@ opponent_connection_check_request.onreadystatechange = function()
     {
         if (JSON.parse(this.responseText).opponent_connected === "true")
         {
-            console.log("opponent connected");
-
             clearInterval(interval);
             
             game_start();
         }
         else if (JSON.parse(this.responseText).opponent_connected === "false")
         {
-            console.log("opponent isn't connected");
+            set_attempt(false);
         }
     }
 }
@@ -165,10 +144,10 @@ function shoot(url, args, method)
     shoot_request.send(args);
 }
 
-function send_request(url, args, method, type)
+function send_request(url, args, method)
 {
     //async ajax GET request
-    request.open(method, url, type);
+    request.open(method, url, true);
     if(method == "POST")
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     
@@ -196,4 +175,37 @@ function opponent_connection_check(url, args, method)
     
     //send request
     opponent_connection_check_request.send(args);
+}
+
+function remove_dead(points, player_elements, field)
+{
+    if (points)
+    {
+        points.forEach(p => 
+        {
+            let p_i = Math.floor(p / height);
+            let p_j = p % width;
+
+            //p_i = 5
+            //p_j = 0
+            for (let i = p_i - 1; i <= p_i + 1; i++)
+            {
+                for (let j = p_j - 1; j <= p_j + 1; j++)
+                {
+                    if (i < 0 || j < 0 || i > height - 1 || j > width - 1)
+                    {
+                        continue;
+                    }
+                    let index = i * height + j;
+                    
+                    if (!field[index])
+                    {
+                        player_elements[index].removeEventListener("click", elementClick);
+                        field[index] = true;
+                        player_elements[index].classList.add("back_miss");
+                    }
+                }
+            }
+        });
+    }
 }
