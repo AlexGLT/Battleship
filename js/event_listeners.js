@@ -162,17 +162,18 @@ function game_start()
 
 function elementClick ()
 {
+    // console.log(shoot_request.readyState);
     //we can make a move only if both ids are set
     if (client_id && opponent_id && configDone && can_fire)
     {
-    let local_id = this.id.split("_")[2];
-    if (!dead_elements[local_id])
-    {
-        id = local_id;
-        shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
-        elements[local_id].removeEventListener("click", elementClick);
-        dead_elements[local_id] = true;
-        can_fire = false;
-    }
+        let local_id = this.id.split("_")[2];
+        if (!dead_elements[local_id])
+        {
+            id = local_id;
+            shoot(shoot_url + "?point=" + local_id + "&opponent_id=" + opponent_id + "&client_id=" + client_id, null, "GET");
+            elements[local_id].removeEventListener("click", elementClick);
+            dead_elements[local_id] = true;
+            can_fire = false;
+        }
     }
 }

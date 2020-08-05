@@ -40,6 +40,10 @@ shoot_request.onreadystatechange = function()
         {
             document.getElementById("client_el_" + id).classList.add("back_red");
             let points = JSON.parse(this.responseText).points;
+            if (points)
+            {
+                checkWin(true, false);
+            }
             remove_dead(points, elements, dead_elements);
             can_fire = true;
         }
@@ -88,6 +92,13 @@ update_request.onreadystatechange = function()
                     document.getElementById("opponent_el_" + e).classList.add("back_miss");
                 }
             });
+        }
+
+        if (killed_ships)
+        {
+            console.log("killed_ships: ");
+            console.log(killed_ships);
+            checkWin(false, true);
         }
 
         remove_dead(killed_ships, opponent_elements, matrix);
@@ -208,4 +219,28 @@ function remove_dead(points, player_elements, field)
             }
         });
     }
+}
+
+function checkWin(client, opponent)
+{
+    if (client)
+    {
+        if (++clientScore == 10)
+        {
+            victory("Game Over. You Won!");
+        }
+    }
+    else if (opponent)
+    {
+        if (++opponentScore == 10)
+        {
+            victory("Game Over. You Losed!");
+        }
+    }
+}
+
+function victory(title)
+{
+    set_attempt(null, title);
+    elements.forEach(e => e.removeEventListener("click", elementClick));
 }

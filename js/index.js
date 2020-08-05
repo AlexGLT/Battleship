@@ -29,12 +29,22 @@
 
     let form_join = document.getElementById("form_join");
 
+    let clientScore = 0;
+    let opponentScore = 0;
+
     //already shot elements
     dead_elements = new Array(height * width);
     dead_elements.fill(false);
 
-    function set_attempt(opponent_connected)
-    {   if (!opponent_connected)
+    function set_attempt(opponent_connected, game_over = "")
+    {   
+        if (game_over)
+        {
+            console.log(game_over);
+            turn_msg.innerHTML = game_over;
+            return;
+        }
+        if (!opponent_connected)
         {
             turn_msg.innerHTML = "Duel ID: " + duel_id;
         }
