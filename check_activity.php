@@ -79,8 +79,4 @@
     {
         echo json_encode(array("can_fire" => "false", "points" => $points, "killed_ships" => $killed_ships));
     }
-<<<<<<< HEAD
 ?>
-=======
-?>
->>>>>>> 527b5c0beaa8e4ba4ff66aa99575e940788316fd

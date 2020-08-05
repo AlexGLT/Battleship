@@ -9,6 +9,7 @@
     let clear_db_url = "clear_db.php";
     let check_duel_url = "check_duel.php";
     let opponent_connection_check_url = "opponent_connection_check.php";
+    let display_opponent_url = "display_opponent.php";
 
     let duel_id;
 
@@ -40,8 +41,8 @@
     {   
         if (game_over)
         {
-            console.log(game_over);
             turn_msg.innerHTML = game_over;
+            console.log(game_over);
             return;
         }
         if (!opponent_connected)

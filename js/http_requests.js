@@ -21,12 +21,23 @@ request.onreadystatechange = function()
 
         if (response)
         {
-            duel_id = response.duel_id;
+            if (response.opponent_ships)
+            {
+                response.opponent_ships.forEach(deck => 
+                {
+                    elements[deck].classList.add("back_blue");
+                });
+                return;
+            }
 
             if (response.err)
             {
                 console.log("Error");
+                return;
             }
+        
+            duel_id = response.duel_id;
+
         }
     }
 }
@@ -49,7 +60,7 @@ shoot_request.onreadystatechange = function()
         }
         else if (JSON.parse(this.responseText).success === "false")
         {
-            document.getElementById("client_el_" + id).classList.add("back_blue");
+            document.getElementById("client_el_" + id).classList.add("back_miss");
             
             interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id, null, "GET");}, 1000);
         }
@@ -227,19 +238,23 @@ function checkWin(client, opponent)
     {
         if (++clientScore == 10)
         {
-            victory("Game Over. You Won!");
+            end_game("Game Over. You Won!");
         }
+        console.log("Your score: " + clientScore);
     }
     else if (opponent)
     {
         if (++opponentScore == 10)
         {
-            victory("Game Over. You Losed!");
+            end_game("Game Over. You Lost!");
+            send_request(display_opponent_url, null, "GET");
+            clearInterval(interval);
         }
+        console.log("Opponent's score: " + opponentScore);
     }
 }
 
-function victory(title)
+function end_game(title)
 {
     set_attempt(null, title);
     elements.forEach(e => e.removeEventListener("click", elementClick));
