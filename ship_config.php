@@ -76,4 +76,6 @@
     executeQuery($db, $insert_decks, $args);
 
     $_SESSION["opponent_last_hit_id"] = -1;
+
+    $_SESSION["checked_ships_id"] = [];
 ?>

@@ -1,8 +1,8 @@
 <?php
     require "./includes/db.php";
-
+    
     session_start();
-
+    
     $point = $_GET['point'];
     
     $duel_id = $_SESSION['duel_id'];
@@ -25,13 +25,13 @@
 
     $sql = "UPDATE deck SET hit = true WHERE ship_id in(SELECT id FROM ship WHERE duel_id = ? AND player_id = ?) AND point = ?";
 
-    $result = executeQuery($db, $sql, [$duel_id, $opponent_id, $point]);    
+    $result = executeQuery($db, $sql, [$duel_id, $opponent_id, $point]);
 
     $points = [];
 
     if ($result->rowCount() != 0)
     {
-        $sql = "SELECT * FROM deck WHERE ship_id = (SELECT id FROM ship WHERE id IN(SELECT ship_id FROM deck WHERE point = ?) AND duel_id = ? AND player_id = ?)";
+        $sql = "SELECT * FROM deck WHERE ship_id = (SELECT id FROM ship WHERE id IN (SELECT ship_id FROM deck WHERE point = ?) AND duel_id = ? AND player_id = ?)";
         $result = executeQuery($db, $sql, [$point, $duel_id, $opponent_id]);
         
         while($row = $result->fetch(PDO::FETCH_ASSOC))
@@ -45,7 +45,6 @@
                 echo json_encode(array("success" => "true"));
                 die();
             }
-
         }
 
         echo json_encode(array("success" => "true", "points" => $points));
