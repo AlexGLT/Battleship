@@ -51,9 +51,17 @@ shoot_request.onreadystatechange = function()
         {
             document.getElementById("client_el_" + id).classList.add("back_red");
             let points = JSON.parse(this.responseText).points;
+            
+            set_attempt(true);
+            
             if (points)
             {
-                checkWin(true, false);
+                for (let i = 0; i < points.length; i++)
+                {
+                    // console.log("killed_ships: ");
+                    // console.log(killed_ships);
+                    checkWin(true, false);
+                }
             }
             remove_dead(points, elements, dead_elements);
             can_fire = true;
@@ -64,8 +72,6 @@ shoot_request.onreadystatechange = function()
             
             interval = setInterval(function() {check_activity(check_activity_url + "?client_id=" + client_id + "&opponent_id=" + opponent_id, null, "GET");}, 1000);
         }
-        
-        set_attempt(true);
     }
 }
 
@@ -107,9 +113,10 @@ update_request.onreadystatechange = function()
 
         if (killed_ships)
         {
-            console.log("killed_ships: ");
-            console.log(killed_ships);
-            checkWin(false, true);
+            for (let i = 0; i < killed_ships.length; i++)
+            {
+                checkWin(false, true);
+            }
         }
 
         remove_dead(killed_ships, opponent_elements, matrix);
@@ -203,13 +210,11 @@ function remove_dead(points, player_elements, field)
 {
     if (points)
     {
-        points.forEach(p => 
+        points.forEach(e => e.forEach(p =>
         {
             let p_i = Math.floor(p / height);
             let p_j = p % width;
 
-            //p_i = 5
-            //p_j = 0
             for (let i = p_i - 1; i <= p_i + 1; i++)
             {
                 for (let j = p_j - 1; j <= p_j + 1; j++)
@@ -228,7 +233,7 @@ function remove_dead(points, player_elements, field)
                     }
                 }
             }
-        });
+        }));
     }
 }
 

@@ -47,6 +47,8 @@
             }
         }
 
+        $points = array($points);
+
         echo json_encode(array("success" => "true", "points" => $points));
     }
     else

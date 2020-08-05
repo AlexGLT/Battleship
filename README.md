@@ -7,5 +7,5 @@
 - [ ] Manage a checkup for field matrix before sending to backEnd
 - [x] Create ajax functionality to send and receive updates
 - [x] Rewrite css styles according to flexbox standard
-- [ ] Add GameOver/Win logic
+- [x] Add GameOver/Win logic
 - [ ] Add Drag&Drop feature
